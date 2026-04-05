@@ -66,7 +66,7 @@ const fetchPatients = async () => {
 }
 
 const openPatient = (id) => {
-  alert(`Карта пациента ID: ${id}\n(В полной версии: переход в детальный профиль)`);
+  router.push(`/patient/${id}`)
 }
 
 const logout = () => {
