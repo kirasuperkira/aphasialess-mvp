@@ -1,6 +1,5 @@
 <template>
   <div class="plan-editor">
-    <!-- Шапка -->
     <header class="editor-header">
       <button class="back-btn" @click="goBack">← Назад</button>
       <h2>План реабилитации: {{ patientName }}</h2>
@@ -14,7 +13,6 @@
       </div>
     </header>
 
-    <!-- Текущие параметры -->
     <section class="current-params">
       <h3>Текущие параметры плана</h3>
       <div class="params-grid">
@@ -45,7 +43,6 @@
       </div>
     </section>
 
-    <!-- Типы упражнений -->
     <section class="exercises-section">
       <h3>Типы упражнений</h3>
       <div class="exercises-grid">
@@ -96,23 +93,21 @@
       </div>
     </section>
 
-    <!-- Предпросмотр изменений -->
     <section class="preview-section" v-if="hasChanges">
       <h3> Предпросмотр изменений</h3>
       <div class="changes-list">
         <div v-for="(change, index) in changesSummary" :key="index" class="change-item">
-          <span class="change-icon">✏️</span>
+          <span class="change-icon"></span>
           <span class="change-text">{{ change }}</span>
         </div>
       </div>
     </section>
 
-    <!-- Модальное окно подтверждения -->
     <div v-if="showConfirmModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal">
         <div class="modal-header">Подтверждение сохранения</div>
         <div class="modal-body">
-          <p>Изменения будут немедленно отправлены пациенту и применены в его приложении.</p>
+          <p>Изменения будут немедленно отправлены пациенту и применены в его приложении</p>
           <div class="modal-actions">
             <button class="btn-secondary" @click="closeModal">Отмена</button>
             <button class="btn-primary" @click="confirmSave">Применить</button>
@@ -121,12 +116,11 @@
       </div>
     </div>
 
-    <!-- Модальное окно успеха -->
     <div v-if="showSuccessModal" class="modal-overlay" @click.self="closeSuccessModal">
       <div class="modal success">
         <div class="modal-header">План обновлён</div>
         <div class="modal-body">
-          <p>Изменения сохранены и синхронизированы с приложением пациента.</p>
+          <p>Изменения сохранены и синхронизированы с приложением пациента</p>
           <button class="btn-primary full-width" @click="closeSuccessModal">Готово</button>
         </div>
       </div>
@@ -147,14 +141,12 @@ const hasChanges = ref(false)
 const showConfirmModal = ref(false)
 const showSuccessModal = ref(false)
 
-// Параметры плана
 const planParams = reactive({
   frequency: 'daily',
   duration: '15',
   adaptationMode: 'auto'
 })
 
-// Упражнения (в MVP — заглушка, в реальности — загрузка с API)
 const exercises = ref([
   {
     id: 1,
@@ -206,7 +198,6 @@ const exercises = ref([
   }
 ])
 
-// Загрузка данных пациента
 const loadPatientData = async () => {
   const patientId = route.params.id
   try {
@@ -214,7 +205,6 @@ const loadPatientData = async () => {
     const patient = res.data.find(p => p.id === patientId)
     if (patient) {
       patientName.value = patient.full_name
-      // В реальной версии — загрузка текущего плана через GET /treatment-plans/:id
       loadCurrentPlan()
     }
   } catch (err) {
@@ -223,12 +213,10 @@ const loadPatientData = async () => {
 }
 
 const loadCurrentPlan = () => {
-  // Заглушка: загружаем параметры из localStorage или устанавливаем дефолтные
   const saved = localStorage.getItem(`plan_${route.params.id}`)
   if (saved) {
     const parsed = JSON.parse(saved)
     Object.assign(planParams, parsed.params)
-    // Обновляем упражнения
     parsed.exercises.forEach(savedEx => {
       const ex = exercises.value.find(e => e.id === savedEx.id)
       if (ex) {
@@ -308,13 +296,10 @@ const confirmSave = async () => {
       updated_at: new Date().toISOString()
     }
     
-    // В MVP сохраняем в localStorage
     localStorage.setItem(`plan_${route.params.id}`, JSON.stringify({
       params: planParams,
       exercises: exercises.value
     }))
-    
-    // В реальной версии: await axios.put(`/treatment-plans/${planId}`, payload)
     
     await new Promise(resolve => setTimeout(resolve, 800))
     showSuccessModal.value = true

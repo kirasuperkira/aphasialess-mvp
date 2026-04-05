@@ -1,6 +1,5 @@
 <template>
   <div class="patient-detail">
-    <!-- Шапка профиля -->
     <header class="profile-header">
       <button class="back-btn" @click="$router.push('/dashboard')">← Назад</button>
       <div class="patient-info">
@@ -18,7 +17,6 @@
       </div>
     </header>
 
-    <!-- Быстрая статистика -->
     <section class="stats-grid">
       <div class="stat-card">
         <div class="stat-value">{{ stats.total_sessions }}</div>
@@ -34,7 +32,6 @@
       </div>
     </section>
 
-    <!-- Графики прогресса -->
     <section class="charts-section">
       <div class="chart-header">
         <h3>Прогресс по точности</h3>
@@ -45,7 +42,6 @@
         </select>
       </div>
       
-      <!-- Простая визуализация прогресса (в MVP без Chart.js) -->
       <div class="progress-visualization">
         <div v-for="(day, index) in progressData" :key="index" class="day-bar">
           <div class="bar" :style="{ height: day.accuracy + '%' }" 
@@ -56,7 +52,6 @@
       </div>
     </section>
 
-    <!-- Проблемные зоны -->
     <section class="problem-areas">
       <h3>Проблемные зоны</h3>
       <div class="problems-list">
@@ -78,7 +73,6 @@
       </div>
     </section>
 
-    <!-- История занятий -->
     <section class="session-history">
       <h3>История занятий</h3>
       <table class="sessions-table">
@@ -129,17 +123,14 @@ const sessions = ref([])
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 
-// Заглушка данных для MVP (в реальности — запрос к API)
 const loadPatientData = async () => {
   const patientId = route.params.id
   
-  // Получаем пациента из списка (в MVP)
   try {
     const res = await axios.get(`${API_URL}/patients`)
     const found = res.data.find(p => p.id === patientId)
     if (found) {
       patient.value = found
-      // Генерируем тестовые данные
       generateMockData()
     }
   } catch (err) {
@@ -148,14 +139,12 @@ const loadPatientData = async () => {
 }
 
 const generateMockData = () => {
-  // Тестовая статистика
   stats.value = {
     total_sessions: 15,
     avg_accuracy: 78,
     last_session: '2 дня назад'
   }
   
-  // Тестовый прогресс (7 дней)
   progressData.value = [
     { date: 'Пн', accuracy: 65 },
     { date: 'Вт', accuracy: 70 },
@@ -166,7 +155,6 @@ const generateMockData = () => {
     { date: 'Вс', accuracy: 85 }
   ]
   
-  // Проблемные зоны
   problemAreas.value = [
     { 
       exercise: 'Глаголы (прошедшее время)', 
@@ -188,7 +176,6 @@ const generateMockData = () => {
     }
   ]
   
-  // История занятий
   sessions.value = [
     { id: 1, date: '2026-04-03', duration: 18, accuracy: 85, status: 'completed' },
     { id: 2, date: '2026-04-02', duration: 15, accuracy: 72, status: 'completed' },
@@ -224,7 +211,6 @@ const viewSessionDetails = (session) => {
 }
 
 const loadProgressData = () => {
-  // В реальной версии — запрос к API с периодом
   console.log('Загрузка прогресса за', chartPeriod.value, 'дней')
 }
 

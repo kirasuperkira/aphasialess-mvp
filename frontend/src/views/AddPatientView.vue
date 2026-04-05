@@ -3,11 +3,10 @@
     <h2>Регистрация пациента</h2>
     <div class="step-indicator">Шаг {{ currentStep }} из 3</div>
 
-    <!-- Шаг 1: Данные пациента -->
     <div v-if="currentStep === 1" class="form-step">
       <h3>Личные данные</h3>
       <input v-model="form.full_name" placeholder="ФИО пациента *" required />
-      <input v-model="form.bot_phone" placeholder="Телефон (для бота)" />
+      <input v-model="form.bot_phone" placeholder="Телефон" />
       <input v-model="form.email" placeholder="Email" />
       <div class="buttons">
         <button class="secondary" @click="$router.push('/dashboard')">Отмена</button>
@@ -15,7 +14,6 @@
       </div>
     </div>
 
-    <!-- Шаг 2: Диагноз и настройки -->
     <div v-if="currentStep === 2" class="form-step">
       <h3>Диагноз и доступ</h3>
       <label>Тип афазии *
@@ -31,7 +29,6 @@
           <option disabled value="">Не выбрано</option>
           <option value="pin">ПИН-код</option>
           <option value="biometric">Биометрия / FaceID</option>
-          <option value="magic_link">Магическая ссылка</option>
         </select>
       </label>
       <div class="buttons">
@@ -40,7 +37,6 @@
       </div>
     </div>
 
-    <!-- Шаг 3: Предпросмотр и создание -->
     <div v-if="currentStep === 3" class="form-step">
       <h3>Предпросмотр профиля</h3>
       <div class="preview-card">
@@ -49,7 +45,6 @@
         <p><strong>Email:</strong> {{ form.email || '—' }}</p>
         <p><strong>Тип афазии:</strong> {{ translateAphasia(form.aphasia_type) }}</p>
         <p><strong>Способ входа:</strong> {{ translateAuth(form.auth_method) }}</p>
-        <p class="note">* Врач автоматически закрепляется как куратор</p>
       </div>
       <div class="buttons">
         <button class="secondary" @click="currentStep = 2">Назад</button>
@@ -59,7 +54,6 @@
       </div>
     </div>
 
-    <!-- Модальное окно успеха -->
     <div v-if="showSuccess" class="modal-overlay" @click.self="closeModal">
       <div class="modal">
         <div class="modal-header">Профиль успешно создан</div>
@@ -106,7 +100,7 @@ const translateAphasia = (type) => ({
 }[type] || '—')
 
 const translateAuth = (method) => ({
-  pin: 'ПИН-код', biometric: 'Биометрия', magic_link: 'Магическая ссылка'
+  pin: 'ПИН-код', biometric: 'Биометрия'
 }[method] || '—')
 
 const submitForm = async () => {

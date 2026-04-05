@@ -25,7 +25,6 @@ const error = ref('')
 const handleLogin = () => {
   loading.value = true
   error.value = ''
-  // MVP: имитация входа + сохранение ID врача для дальнейших запросов
   localStorage.setItem('doctor_id', 'doctor-mvp-001')
   setTimeout(() => {
     loading.value = false
