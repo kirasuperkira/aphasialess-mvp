@@ -8,10 +8,15 @@ from typing import List
 
 load_dotenv()
 
-from .database import SessionLocal, engine, Base
-from .models import Patient
-from .schemas import PatientCreate, PatientResponse
-from .bitrix_client import Bitrix24Client
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+from database import SessionLocal, engine, Base
+from models import Patient
+from schemas import PatientCreate, PatientResponse
+from bitrix_client import Bitrix24Client
 
 Base.metadata.create_all(bind=engine)
 
