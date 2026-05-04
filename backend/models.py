@@ -2,7 +2,7 @@ import uuid
 import enum
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime, func, Enum as SAEnum
-from database import Base
+from .database import Base
 
 class AphasiaType(str, enum.Enum):
     motor = "motor"
@@ -22,9 +22,8 @@ class Patient(Base):
     aphasia_type = Column(SAEnum(AphasiaType), nullable=False)
     auth_method = Column(SAEnum(AuthMethod), nullable=True)
     assigned_doctor_id = Column(String, nullable=False)
-
+    subscription_status = Column(String, default="Trial")
     crm_external_id = Column(String, nullable=True, default=None)
     bpms_process_status = Column(String, default="pending")
     bot_phone = Column(String, nullable=True, default=None)
-
     created_at = Column(DateTime, server_default=func.now())

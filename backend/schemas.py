@@ -1,17 +1,17 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
-from models import AphasiaType, AuthMethod
+from .models import AphasiaType, AuthMethod
 
 class PatientCreate(BaseModel):
-    full_name: str = Field(..., min_length=2, max_length=100, description="ФИО пациента")
-    aphasia_type: AphasiaType
-    auth_method: Optional[AuthMethod] = None
+    full_name: str
+    aphasia_type: str
+    bot_phone: str = ""
     assigned_doctor_id: str
-
+    auth_method: str = "biometric"
+    subscription_status: str = "Trial"
     crm_external_id: Optional[str] = None
     bpms_process_status: Optional[str] = "pending"
-    bot_phone: Optional[str] = None
 
 class PatientResponse(BaseModel):
     id: str
