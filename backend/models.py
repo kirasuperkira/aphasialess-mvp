@@ -2,7 +2,7 @@ import uuid
 import enum
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime, func, Enum as SAEnum
-from .database import Base
+from database import Base
 
 class AphasiaType(str, enum.Enum):
     motor = "motor"
